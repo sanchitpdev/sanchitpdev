@@ -1,126 +1,81 @@
-<h1 align="center">Hey, I'm Sanchit 👋</h1>
+<div align="center">
 
-<p align="center">
-  <b>Java Backend Developer · Spring Boot · APIs · Clean Architecture</b><br/>
-  Building backend systems that I can actually explain — not just ones that "somehow work"
-</p>
+# Hi, I'm Sanchit Pawar 👋
 
-<p align="center">
-  <a href="https://linkedin.com/in/sanchitpawar"><img src="https://img.shields.io/badge/LinkedIn-sanchitpawar-0077B5?style=flat&logo=linkedin&logoColor=white"/></a>
-  <a href="mailto:sanchitp.dev@gmail.com"><img src="https://img.shields.io/badge/Email-sanchitp.dev@gmail.com-D14836?style=flat&logo=gmail&logoColor=white"/></a>
-  <a href="https://x.com/sanchitpawar600"><img src="https://img.shields.io/badge/X-sanchitpawar600-black?style=flat&logo=x&logoColor=white"/></a>
-</p>
+### Java Backend Developer — building production-grade APIs and distributed systems
 
----
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-sanchitpawar-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/sanchitpawar)
+[![GitHub](https://img.shields.io/badge/GitHub-sanchitpdev-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sanchitpdev)
+[![Email](https://img.shields.io/badge/Email-sanchitp.dev@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:sanchitp.dev@gmail.com)
 
-## About Me
-
-I'm a backend developer focused on Java and Spring Boot. My goal is to write code I can reason about clearly — not just code that passes tests.
-
-I learn by building things end-to-end: designing the schema, wiring up the service layer, securing the API, containerising with Docker, and shipping with CI/CD. I care about understanding *why* a pattern works, not just copying it.
-
-Right now I'm deepening my backend fundamentals through project work and consistent DSA practice, aiming to grow into a developer who can be trusted with production systems.
+</div>
 
 ---
 
-## Featured Projects
+## 🧩 About me
 
-### 🏠 [StayNest](https://github.com/sanchitpdev/StayNest) — Full-Stack Vacation Rental Platform
+- 🔭 Backend developer focused on the **Java & Spring Boot** ecosystem — REST APIs, microservices, and the infrastructure around them.
+- ⚙️ I care about the parts of backend most tutorials skip: **failure handling, caching, idempotency, CI/CD, and clean data models**.
+- 🎓 Pursuing my **MCA at Lovely Professional University**, sharpening system design and DSA alongside hands-on projects.
+- ✍️ Currently working toward my first **research review paper on AI tooling** in software development.
+- 📍 Based in Navi Mumbai, India.
 
-> An Airbnb-inspired platform built across two iterations, covering the complete booking lifecycle from property listing to payments, messaging, reviews, and analytics.
+## 🛠️ Tech Stack
 
-**Stack:** Java 21 · Spring Boot 3.3 · Spring Security (JWT) · Spring Data JPA · PostgreSQL · React 18 · Tailwind CSS · Docker · GitHub Actions
-
-What I built and why it matters:
-- **17 JPA entities** across two versions (MVP → Enhanced), with soft deletes on all of them using `@SQLDelete` + `@SQLRestriction`
-- **Availability Calendar** pre-populated 2 years ahead per unit — gives O(1) availability lookup instead of expensive range queries at booking time
-- **Dynamic pricing engine** with priority-based rule resolution (SEASONAL > HOLIDAY > WEEKEND > BASE), per-unit pricing, and a date-range breakdown API
-- **JWT auth** with three roles (GUEST / HOST / ADMIN), manual role checks in the service layer for consistent 403 responses
-- **Coupon system** with flat and percentage discounts, per-user limits, minimum booking validation, and auto-expiry
-- **Postman test suite** with 115 automated cases across 23 phases — dynamic future dates, auto-captured tokens, edge case coverage
-- **CI/CD via GitHub Actions** with a self-hosted runner: CI builds and verifies on every push, CD deploys to Docker Compose on push to main with health-check polling
-
----
-
-### 🔗 [URL Shortener](https://github.com/sanchitpdev/url-shortener) — Production-Deployed Backend Service
-
-> A production-ready URL shortener deployed on AWS ECS Fargate, demonstrating real infrastructure decisions under constraints.
-
-**Stack:** Java 21 · Spring Boot 3 · Redis · PostgreSQL · Docker · AWS ECS Fargate · AWS ECR · AWS ALB · GitHub Actions
-
-**Live:** [url-shortener-version1.vercel.app](https://url-shortener-version1.vercel.app) · API on AWS ALB
-
-Key engineering decisions:
-- **Cache-aside with Redis** — every redirect checks Redis first (24h TTL), falls back to PostgreSQL on miss and re-caches. Keeps redirect latency low without complex invalidation logic
-- **Multi-stage Docker build** — JDK build stage → lean JRE runtime image (~180 MB), smaller and faster to pull
-- **Health-check-gated startup** — `url-service` only starts after Postgres and Redis pass health checks, eliminating connection errors on boot
-- **Trivy CVE scanning** in CI — HIGH/CRITICAL vulnerabilities surfaced before any image reaches production
-- **Full CI/CD pipeline:** test → build → Trivy scan → push to ECR (tagged with commit SHA) → rolling ECS deploy
-- **Slug expiry** — optional `expiryDays` per request, stored as `expiresAt` timestamp on the entity
-
----
-
-### ✅ [TaskForge](https://github.com/sanchitpdev/TaskForge) — Task Management Backend
-
-> Clean Spring Boot REST API for task management, built to practise layered architecture and real-world API design patterns.
-
-**Stack:** Java · Spring Boot · Spring Data JPA · MySQL · Maven
-
----
-
-## Tech Stack
+**Languages**
+![Java](https://img.shields.io/badge/Java-ED8B00?style=flat&logo=openjdk&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![SQL](https://img.shields.io/badge/SQL-4479A1?style=flat&logo=postgresql&logoColor=white)
 
 **Backend**
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat&logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=flat&logo=springsecurity&logoColor=white)
+![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=flat&logo=hibernate&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=flat&logo=jsonwebtokens&logoColor=white)
 
-![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=flat&logo=spring&logoColor=white)
-![Spring Security](https://img.shields.io/badge/Spring_Security-JWT-6DB33F?style=flat&logo=springsecurity&logoColor=white)
-![Spring Data JPA](https://img.shields.io/badge/Spring_Data_JPA-Hibernate-6DB33F?style=flat&logo=spring&logoColor=white)
-![Maven](https://img.shields.io/badge/Maven-3.9+-C71A36?style=flat&logo=apachemaven&logoColor=white)
+**Data & Messaging**
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat&logo=redis&logoColor=white)
+![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=flat&logo=apachekafka&logoColor=white)
 
-**Databases & Caching**
+**Cloud & DevOps**
+![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat&logo=amazonaws&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=githubactions&logoColor=white)
+![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=flat&logo=prometheus&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana-F46800?style=flat&logo=grafana&logoColor=white)
 
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?style=flat&logo=postgresql&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?style=flat&logo=mysql&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=flat&logo=redis&logoColor=white)
+**Frontend & Testing**
+![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)
+![JUnit5](https://img.shields.io/badge/JUnit_5-25A162?style=flat&logo=junit5&logoColor=white)
 
-**DevOps & Cloud**
+## 🚀 Featured Projects
 
-![Docker](https://img.shields.io/badge/Docker-Containerised-0db7ed?style=flat&logo=docker&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI%2FCD-2088FF?style=flat&logo=github-actions&logoColor=white)
-![AWS](https://img.shields.io/badge/AWS-ECS_Fargate-FF9900?style=flat&logo=amazonaws&logoColor=white)
+### 🧠 [FluxCards — AI Flashcard Engine](https://github.com/sanchitpdev/flashcard-engine)
+Turns any PDF into a deck of flashcards, builds a **prerequisite knowledge graph** between the concepts, and schedules reviews with **SM-2 spaced repetition** — surfacing a card only once its prerequisites are mastered. Asynchronous processing pipeline, Gemini integration with a model-fallback chain, JWT auth, and Bucket4j rate limiting.
+`Spring Boot 3` · `PostgreSQL` · `Gemini API` · `React`
+🔗 [Live demo](https://fluxcards-flashcard-engine.vercel.app/)
 
-**Frontend (supporting)**
+### 📦 [OrderFlow — Event-Driven Order Processing](https://github.com/sanchitpdev/order-processing-system)
+Three decoupled microservices (Order, Payment, Notification) communicating asynchronously over **Apache Kafka**, with automatic retries, exponential backoff, **dead-letter queues**, and idempotency safeguards to prevent duplicate charges. Real-time monitoring with Prometheus and Grafana.
+`Spring Boot` · `Apache Kafka` · `Docker` · `Prometheus` · `Grafana`
 
-![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react&logoColor=black)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat&logo=javascript&logoColor=black)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
+### 🔗 [ShrinkIt — URL Shortener](https://github.com/sanchitpdev/url-shortener)
+A URL shortener using a **Redis cache-aside** pattern so hot slugs resolve without a database round-trip, deployed to **AWS ECS Fargate** behind an Application Load Balancer. Full **GitHub Actions CI/CD**: tests → Trivy CVE scan → push to ECR → rolling deploy.
+`Java` · `Spring Boot` · `Redis` · `AWS ECS` · `GitHub Actions`
+🔗 [Live demo](https://url-shortener-version1.vercel.app/)
 
----
+## 📊 GitHub Stats
 
-## GitHub Stats
+<div align="center">
 
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=sanchitpdev&theme=github_dark&hide_border=true&show_icons=true&count_private=false" height="150"/>
-  &nbsp;
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=sanchitpdev&theme=github_dark&hide_border=true&include_all_commits=false&count_private=false&layout=compact" height="150"/>
-</p>
+![Sanchit's GitHub stats](https://github-readme-stats.vercel.app/api?username=sanchitpdev&show_icons=true&hide_border=true&theme=tokyonight)
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=sanchitpdev&layout=compact&hide_border=true&theme=tokyonight)
 
-<p align="center">
-  <img src="https://nirzak-streak-stats.vercel.app/?user=sanchitpdev&theme=github_dark&hide_border=true"/>
-</p>
+</div>
 
----
+## 🤝 Let's connect
 
-## What I'm Focused On
+I'm open to backend developer / SDE internships and early-career roles. If you work on backend systems or distributed architecture, I'd love to connect.
 
-- Shipping the next project with even tighter backend architecture
-- DSA practice — consistent problem-solving, not just grinding
-- Contributing to open source to get exposure to codebases I didn't write
-
----
-
-<p align="center">
-  If something I built is useful to you, a ⭐ goes a long way.<br/>
-  Always open to connect — <a href="https://linkedin.com/in/sanchitpawar">LinkedIn</a> is the best place.
-</p>
+[![LinkedIn](https://img.shields.io/badge/Connect_on_LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/sanchitpawar)
