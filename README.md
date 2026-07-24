@@ -1,11 +1,15 @@
 <div align="center">
 
-<img src="assets/binary-portrait.svg" width="480" alt="Sanchit Pawar rendered in binary" />
-
 <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&weight=600&size=22&duration=3000&pause=800&color=39D353&center=true&vCenter=true&width=600&lines=Hi%2C+I'm+Sanchit+Pawar+%F0%9F%91%8B;Java+Backend+Developer;Spring+Boot+%C2%B7+PostgreSQL+%C2%B7+Redis+%C2%B7+Docker;Building+production-grade+APIs" alt="Typing intro" />
 
+<img src="assets/minecraft-graph.svg" width="720" alt="My GitHub contributions as a Minecraft world, built block by block by a pixel miner" />
+
+<sub>⛏ my last year of commits, mined block by block — refreshes itself daily · <b>watch it build: refresh the page</b></sub>
+
+<br><br>
+
 [![About](https://img.shields.io/badge/🧩_About-0d1117?style=for-the-badge)](#-about-me)
-[![Projects](https://img.shields.io/badge/🚀_Projects-0d1117?style=for-the-badge)](#-featured-projects)
+[![Projects](https://img.shields.io/badge/🚀_Projects-0d1117?style=for-the-badge)](#-projects)
 [![Game](https://img.shields.io/badge/🎮_Play_Me-0d1117?style=for-the-badge)](#-play-tic-tac-toe-against-my-readme)
 [![Stats](https://img.shields.io/badge/📊_Stats-0d1117?style=for-the-badge)](#-github-stats)
 [![Contact](https://img.shields.io/badge/🤝_Contact-0d1117?style=for-the-badge)](#-lets-connect)
@@ -36,51 +40,77 @@
 
 </div>
 
-## 🚀 Featured Projects
+## 🚀 Projects
 
-<div align="center">
-
-[![JourneyOS](https://github-readme-stats.vercel.app/api/pin/?username=sanchitpdev&repo=journeyos&theme=tokyonight&hide_border=true)](https://github.com/sanchitpdev/journeyos)
-[![FluxCards](https://github-readme-stats.vercel.app/api/pin/?username=sanchitpdev&repo=FluxCards&theme=tokyonight&hide_border=true)](https://github.com/sanchitpdev/FluxCards)
-
-</div>
+| | Project | What it does | Stack | |
+|--|---------|--------------|-------|--|
+| 🗺️ | **[JourneyOS](https://github.com/sanchitpdev/journeyos)** | Multi-modal travel planning engine — 7 microservices, delay-aware routing across a 40-city network | `Spring Boot` `PostgreSQL` `Redis` `Docker` | [Repo ↗](https://github.com/sanchitpdev/journeyos) |
+| ⌨️ | **TypeDuo** | LLM-backed code-typing trainer — exercises pre-generated into a content bank, zero-latency serving | `Java 21` `Spring Boot 3` `PostgreSQL` | soon |
+| 🧠 | **[FluxCards](https://github.com/sanchitpdev/FluxCards)** | Turns any PDF into AI-generated flashcards with spaced repetition | `Spring Boot 3` `Gemini API` `React` | [Live ↗](https://fluxcards-flashcard-engine.vercel.app/) |
 
 <details>
-<summary><b>🗺️ JourneyOS — Multi-Modal Travel Planning Engine</b> <i>(click to expand)</i></summary>
+<summary><b>🗺️ JourneyOS — architecture & engineering decisions</b></summary>
 <br>
 
-**7 Spring Boot microservices** behind an API Gateway running a parse → route → aggregate → score → rank pipeline for end-to-end journey planning across a 40-city network.
+```mermaid
+flowchart LR
+    U([Traveler]) --> GW[API Gateway]
+    GW --> P["NL Parser<br/>Gemini + rule-based fallback"]
+    P --> R["Route Aggregator<br/>multi-modal, 40 cities"]
+    R --> D["Delay Engine<br/>log-normal model · P95 check"]
+    D --> S["Score & Rank"]
+    S --> GW
+    R <--> C[(Redis cache)]
+    R --> DB[(PostgreSQL<br/>Flyway-migrated)]
+```
 
-- **Delay-intelligence engine**: models per-leg delays as a log-normal distribution from mode/duration baselines plus weather and holiday signals, then validates every transfer against 95th-percentile worst-case delay — connections a traveler would likely miss get dropped.
-- **Gemini API** natural-language trip parsing with a rule-based fallback, **Redis** caching, Flyway-migrated **PostgreSQL**, all in one Docker Compose stack with a React + TypeScript frontend.
-
-`Java` · `Spring Boot` · `PostgreSQL` · `Redis` · `Docker` · `React`
+**Engineering decisions that matter:**
+- **Delay intelligence, not just routing** — each leg's delay is modeled as a log-normal distribution from mode/duration baselines plus weather and holiday signals; every transfer is validated against the **95th-percentile worst case**, so connections a traveler would realistically miss get dropped before they're recommended.
+- **Graceful AI degradation** — Gemini parses free-text trip requests, but a rule-based parser takes over on failure. The system never depends on an LLM being up.
+- **7 services, one `docker compose up`** — the whole stack (services, PostgreSQL, Redis, React + TypeScript frontend) boots reproducibly.
 
 </details>
 
 <details>
-<summary><b>⌨️ TypeDuo — LLM-Backed Code-Typing Platform</b> <i>(click to expand)</i></summary>
+<summary><b>⌨️ TypeDuo — architecture & engineering decisions</b></summary>
 <br>
 
-A code-typing practice platform where a **scheduled job pre-generates and validates exercises into a content bank**, so requests are served instantly instead of waiting on a live LLM call.
+```mermaid
+flowchart LR
+    J["Scheduled Job"] --> L["LLM generate<br/>+ validate"]
+    L --> B[(Content Bank<br/>PostgreSQL)]
+    U([User]) --> A[REST API]
+    A --> B
+    U -- raw submission --> SC["Server-side Scoring<br/>speed + accuracy recomputed"]
+    SC --> RS["Per-user readiness score"]
+```
 
-- **Server-side scoring** recomputes typing speed and accuracy from each raw submission so results can't be faked, with a per-user readiness score across difficulty levels.
-- **Java 21 + Spring Boot 3**, stateless JWT auth, Flyway-migrated PostgreSQL, Docker Compose, React + TypeScript frontend.
-
-`Java 21` · `Spring Boot 3` · `PostgreSQL` · `Docker` · `React`
+**Engineering decisions that matter:**
+- **LLM off the hot path** — a scheduled job generates and validates exercises into a content bank ahead of time, so user requests are served instantly from PostgreSQL instead of waiting seconds on a live LLM call.
+- **Cheat-proof scoring** — the server recomputes typing speed and accuracy from each raw submission; clients can't fake results.
+- **Java 21 + Spring Boot 3**, stateless JWT auth, Flyway migrations, Docker Compose.
 
 </details>
 
 <details>
-<summary><b>🧠 FluxCards — AI Flashcard Engine</b> <i>(click to expand)</i></summary>
+<summary><b>🧠 FluxCards — architecture & engineering decisions</b></summary>
 <br>
 
-Turns any uploaded PDF into flashcards: an AI pipeline built on **Apache PDFBox + the Gemini API**, with Flyway-managed schema migrations.
+```mermaid
+flowchart LR
+    PDF([PDF upload]) --> PB["Apache PDFBox<br/>text extraction"]
+    PB --> G["Gemini pipeline<br/>card generation"]
+    G --> DB[(PostgreSQL<br/>8-table normalized schema)]
+    DB --> SR["SM-2 spaced repetition<br/>scheduler"]
+    SR --> U([Learner])
+    U -.-> AUTH["JWT + refresh rotation<br/>Bucket4j rate limiting"]
+    AUTH -.-> DB
+```
 
-- **JWT auth with refresh-token rotation** and Bucket4j rate limiting across 15+ REST endpoints in a layered service architecture.
-- 8-table normalized **PostgreSQL** schema with Hibernate/JPA mappings; backend on Render, React frontend on Vercel.
-
-`Spring Boot 3` · `Gemini API` · `PostgreSQL` · `React` · 🔗 **[Live demo](https://fluxcards-flashcard-engine.vercel.app/)**
+**Engineering decisions that matter:**
+- **JWT with refresh-token rotation** and Bucket4j rate limiting across 15+ REST endpoints — auth built like a production service, not a demo.
+- **8-table normalized PostgreSQL schema** with Hibernate/JPA mappings and Flyway-managed migrations.
+- **Deployed for real**: backend on Render, React frontend on Vercel — [try it live](https://fluxcards-flashcard-engine.vercel.app/).
 
 </details>
 
@@ -109,20 +139,6 @@ Turns any uploaded PDF into flashcards: an AI pipeline built on **Apache PDFBox 
 
 <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=sanchitpdev&layout=compact&hide_border=true&theme=tokyonight" height="140" alt="Top languages" />
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=sanchitpdev&theme=tokyo-night&hide_border=true&area=true" width="95%" alt="Contribution graph" />
-
-</div>
-
-## 🐍 Contribution Snake
-
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sanchitpdev/sanchitpdev/output/github-contribution-grid-snake-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/sanchitpdev/sanchitpdev/output/github-contribution-grid-snake.svg" />
-  <img alt="Contribution snake" src="https://raw.githubusercontent.com/sanchitpdev/sanchitpdev/output/github-contribution-grid-snake.svg" />
-</picture>
-
 </div>
 
 ## 🤝 Let's connect
@@ -133,5 +149,5 @@ I'm open to backend developer / SDE internships and early-career roles. If you w
 [![Email](https://img.shields.io/badge/Say_hello-sanchitp.dev@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:sanchitp.dev@gmail.com)
 
 <div align="center">
-<sub>⚡ This README plays games, renders me in binary, and updates itself — <a href="https://github.com/sanchitpdev/sanchitpdev">see how it works</a></sub>
+<sub>⚡ This README mines my commits into a Minecraft world, plays tic-tac-toe, and rebuilds itself daily — <a href="https://github.com/sanchitpdev/sanchitpdev">see how it works</a></sub>
 </div>
